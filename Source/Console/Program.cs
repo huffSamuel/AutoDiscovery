@@ -1,21 +1,16 @@
-﻿using AutoDiscovery.Client;
-using AutoDiscovery.Server;
+﻿using AutoDiscovery.Server;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ConsoleTest
 {
     class Program
     {
         static private int Port = 45982;
-        static Server serv;
+       
 
         static void Main(string[] args)
         {
+            IServer serv;
             serv = new Server(Port);
 
             serv.ClientConnected += OnClientConnected;

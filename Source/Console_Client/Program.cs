@@ -11,7 +11,7 @@ namespace Console_Client
     {
         static void Main(string[] args)
         {
-            Client client = new Client(45982, 2000);
+            IClient client = new Client(45982, 2000);
             client.ServerDiscovered += OnServerFound;
             client.Start();
             Console.WriteLine("Client broadcasting. Press ENTER to stop.");

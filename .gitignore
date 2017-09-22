@@ -303,3 +303,4 @@ OpenCover/
 
 # Sandboxing Projects
 Sandbox/
+*.nuspec

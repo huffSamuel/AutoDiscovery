@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,13 +19,7 @@ namespace AutoDiscovery.Server
             }
         }
 
-        private ConcurrentQueue<ClientMessage> messages;
         public int Port { get; private set; }
-        public List<string> DiscoveredClients
-        {
-            get;
-            private set;
-        }
 
         private AutoResetEvent messageReceived = new AutoResetEvent(false);
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
@@ -38,12 +28,6 @@ namespace AutoDiscovery.Server
         public Server(int port)
         {
             this.Port = port;
-            messages = new ConcurrentQueue<ClientMessage>();
-        }
-
-        public void Send(string ipAddress, byte[] message)
-        {
-            messages.Enqueue(new ClientMessage(ipAddress, message));
         }
 
     	public void Start()
@@ -70,12 +54,6 @@ namespace AutoDiscovery.Server
                 CancellationTokenSource internalSource = new CancellationTokenSource();
                 e = new IPEndPoint(IPAddress.Any, Port);
 
-                UdpState state = new UdpState()
-                {
-                    Endpoint = e,
-                    Server = server
-                };
-
                 Task.Factory.StartNew(() =>
                 {
                     dataIn = server.Receive(ref e);
@@ -91,30 +69,6 @@ namespace AutoDiscovery.Server
 
                 internalSource.Cancel();
             }
-        }
-
-        private void ReceiveCallback(IAsyncResult result)
-        {
-            UdpClient client = ((UdpState)(result.AsyncState)).Server;
-            IPEndPoint endpoint = ((UdpState)(result.AsyncState)).Endpoint;
-
-            try
-            {
-                byte[] receivedBytes = client.EndReceive(result, ref endpoint);
-
-                string clientIP = endpoint.Address.ToString();
-
-                ClientConnectedEventArgs args = new ClientConnectedEventArgs(clientIP, receivedBytes);
-                ClientConnected?.Invoke(this, args);
-
-                IPEndPoint responseEndpoint = new IPEndPoint(endpoint.Address, Port);
-                client.Send(receivedBytes, receivedBytes.Length);
-            }
-            catch(Exception exc)
-            {
-                
-            }
-            messageReceived.Set();   
         }
 
     	public event EventHandler<ClientConnectedEventArgs> ClientConnected;
