@@ -8,6 +8,9 @@ AutoDiscovery is a .NET library for client/server discovery via UDP.
 
 ` PM> Install-Package AoBD.AutoDiscovery ` 
 
+# Requirements
+.NET Framework 4.5
+
 # Use
 
 Create a server:
@@ -32,9 +35,6 @@ client.Stop();
 The server will discover clients that are broadcasting to the network and notify the consumer via the `ClientConnected` event; likewise the client will notify via the `ServerDiscovered` event.
 
 **Communication is not managed at this point and clients will broadcast and servers will listen until `Stop()` is called. If not managed correctly this will lead to duplicate server/client discovery.**
-
-# Requirements
-.NET Framework 4.5
 
 # Support
 Please submit issues via the issue tracker.
