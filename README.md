@@ -2,6 +2,8 @@
 
 AutoDiscovery is a .NET library for client/server discovery via UDP.
 
+### Under update. The current version has some significant shortcomings that will be addressed in version 1.1.
+
 [![Nuget](https://img.shields.io/nuget/v/AoBD.AutoDiscovery.svg)](https://www.nuget.org/packages/AoBD.AutoDiscovery/)
 
 # Installation
